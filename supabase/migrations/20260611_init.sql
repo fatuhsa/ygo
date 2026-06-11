@@ -10,7 +10,10 @@ ALTER TABLE cards ENABLE ROW LEVEL SECURITY;
 -- Public read access for cards table
 CREATE POLICY "Public read cards" ON cards FOR SELECT USING (true);
 
--- Storage bucket setup (Note: Bucket creation usually via API or Console, but policies here)
+-- Storage bucket setup
+INSERT INTO storage.buckets (id, name, public) 
+VALUES ('ygo-images', 'ygo-images', true) 
+ON CONFLICT (id) DO NOTHING;
+
 -- Policy for public read access to ygo-images
--- (Assuming bucket 'ygo-images' is created)
 CREATE POLICY "Public read images" ON storage.objects FOR SELECT USING (bucket_id = 'ygo-images');

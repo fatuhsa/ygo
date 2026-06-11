@@ -36,18 +36,70 @@ export const YgoCard: React.FC<YgoCardProps> = ({ card, onClick }) => {
   }, [card.id]);
 
   return (
-    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: 'background.paper', transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.02)' } }}>
+    <Card sx={{ 
+      height: '100%', 
+      display: 'flex', 
+      flexDirection: 'column', 
+      bgcolor: 'background.paper', 
+      transition: 'all 0.2s ease-in-out', 
+      '&:hover': { 
+        transform: 'translateY(-4px)',
+        borderColor: 'primary.main',
+        boxShadow: (theme) => `0 0 10px ${theme.palette.primary.main}44`
+      } 
+    }}>
       <CardActionArea onClick={() => onClick(card)} sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
-        <Box sx={{ height: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', p: 2 }}>
+        <Box sx={{ 
+          width: '100%',
+          aspectRatio: '2/3',
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          p: 1,
+          bgcolor: '#000'
+        }}>
           {loading ? (
-            <Skeleton variant="rectangular" width="100%" height="100%" sx={{ borderRadius: 1 }} />
+            <Skeleton variant="rectangular" width="100%" height="100%" />
           ) : (
-            <CardMedia component="img" image={localUrl || ''} alt={card.name} sx={{ height: '100%', objectFit: 'contain' }} />
+            <CardMedia 
+              component="img" 
+              image={localUrl || ''} 
+              alt={card.name} 
+              sx={{ 
+                height: '100%', 
+                width: '100%',
+                objectFit: 'contain' 
+              }} 
+            />
           )}
         </Box>
-        <CardContent sx={{ flexGrow: 1 }}>
-          <Typography variant="h6" noWrap title={card.name}>{card.name}</Typography>
-          <Typography variant="body2" color="text.secondary">{card.type}</Typography>
+        <CardContent sx={{ p: 1, '&:last-child': { pb: 1 }, flexGrow: 1 }}>
+          <Typography 
+            variant="body2" 
+            sx={{ 
+              fontWeight: 800, 
+              lineHeight: 1.1,
+              mb: 0.2,
+              color: 'text.primary',
+              // Removed clamping to show full title
+              wordBreak: 'break-word',
+              fontSize: '0.85rem'
+            }}
+          >
+            {card.name}
+          </Typography>
+          <Typography 
+            variant="caption" 
+            color="primary" 
+            sx={{ 
+              fontWeight: 700, 
+              textTransform: 'uppercase', 
+              fontSize: '0.75rem',
+              letterSpacing: '0.5px'
+            }}
+          >
+            {card.type}
+          </Typography>
         </CardContent>
       </CardActionArea>
     </Card>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Dialog, DialogContent, DialogTitle, IconButton, Typography, Box, Grid, Chip, Divider, Skeleton, useMediaQuery, useTheme, Slide } from '@mui/material';
-import { TransitionProps } from '@mui/material/transitions';
-import { X } from 'lucide-react';
+import { Dialog, DialogContent, DialogTitle, IconButton, Typography, Box, Grid, Chip, Skeleton, useMediaQuery, useTheme, Slide, Paper } from '@mui/material';
+import type { TransitionProps } from '@mui/material/transitions';
+import { X, Shield, Swords, Star, Share2 } from 'lucide-react';
 import type { YgoCardData } from '../types';
 import { supabase } from '../supabaseClient';
 
@@ -16,6 +16,31 @@ const Transition = React.forwardRef(function Transition(
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+
+// Helper component for stat blocks
+const StatBlock = ({ icon, label, value }: { icon: React.ReactNode, label: string, value: string | number }) => (
+  <Paper sx={{ 
+    display: 'flex', 
+    alignItems: 'center', 
+    gap: 1.5, 
+    p: 1.5, 
+    border: '1px solid #333', 
+    bgcolor: '#0a0a0a',
+    borderRadius: 0,
+    flex: 1,
+    minWidth: '100px'
+  }}>
+    <Box sx={{ color: 'primary.main', display: 'flex' }}>{icon}</Box>
+    <Box>
+      <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', lineHeight: 1, mb: 0.5, textTransform: 'uppercase', fontWeight: 700 }}>
+        {label}
+      </Typography>
+      <Typography variant="body1" sx={{ fontWeight: 900, lineHeight: 1 }}>
+        {value}
+      </Typography>
+    </Box>
+  </Paper>
+);
 
 export const CardDetailsModal: React.FC<CardDetailsModalProps> = ({ card, onClose }) => {
   const [localUrl, setLocalUrl] = useState<string | null>(null);
@@ -43,68 +68,155 @@ export const CardDetailsModal: React.FC<CardDetailsModalProps> = ({ card, onClos
       fullScreen={isMobile}
       maxWidth="md" 
       fullWidth 
-      TransitionComponent={isMobile ? Transition : undefined}
-      PaperProps={{ 
-        sx: { 
-          bgcolor: 'background.default',
-          backgroundImage: 'none',
-          ...(isMobile && {
-            marginTop: '10vh',
-            borderTopLeftRadius: '20px',
-            borderTopRightRadius: '20px',
-            border: 'none',
-            borderTop: '2px solid #333333'
-          })
-        } 
+      slots={{ transition: isMobile ? Transition : undefined }}
+      slotProps={{ 
+        paper: { 
+          sx: { 
+            bgcolor: 'background.paper',
+            backgroundImage: 'none',
+            ...(isMobile && {
+              marginTop: '10vh',
+              borderTopLeftRadius: '24px',
+              borderTopRightRadius: '24px',
+              border: 'none',
+              borderTop: '2px solid #ffea00' // Neon accent on top
+            })
+          } 
+        }
       }}
     >
-      <DialogTitle sx={{ m: 0, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="h6" component="div">{card.name}</Typography>
-        <IconButton aria-label="close" onClick={onClose} sx={{ color: 'text.secondary' }}>
-          <X />
+      <DialogTitle sx={{ 
+        m: 0, 
+        p: 2, 
+        pt: isMobile ? 3 : 2,
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'flex-start',
+        borderBottom: '1px solid #333'
+      }}>
+        <Box>
+          <Typography variant="h5" component="div" sx={{ fontWeight: 900, letterSpacing: '-0.5px' }}>
+            {card.name}
+          </Typography>
+          <Typography variant="caption" sx={{ color: 'primary.main', textTransform: 'uppercase', fontWeight: 700 }}>
+            ID: {card.id}
+          </Typography>
+        </Box>
+        <IconButton aria-label="close" onClick={onClose} sx={{ color: 'text.secondary', mt: -1, mr: -1 }}>
+          <X size={28} />
         </IconButton>
       </DialogTitle>
-      <DialogContent dividers sx={{ p: { xs: 2, md: 4 } }}>
+      
+      <DialogContent sx={{ p: { xs: 2, md: 4 }, bgcolor: 'background.default' }}>
         <Grid container spacing={4}>
+          {/* Left Column: Image */}
           <Grid size={{ xs: 12, md: 5 }}>
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ 
+              width: '100%', 
+              display: 'flex', 
+              justifyContent: 'center',
+              p: 2,
+              bgcolor: '#111',
+              border: '1px solid #333',
+              position: 'sticky',
+              top: 16
+            }}>
               {localUrl ? (
-                <img src={localUrl} alt={card.name} style={{ maxWidth: '100%', maxHeight: '500px', objectFit: 'contain', borderRadius: '8px' }} />
+                <img src={localUrl} alt={card.name} style={{ maxWidth: '100%', height: 'auto', objectFit: 'contain' }} />
               ) : (
-                <Skeleton variant="rectangular" width={300} height={430} sx={{ borderRadius: 2 }} />
+                <Skeleton variant="rectangular" width="100%" height={400} />
               )}
             </Box>
           </Grid>
-          <Grid size={{ xs: 12, md: 7 }}>
-            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 2 }}>
-              <Chip label={card.type} color="primary" variant="outlined" />
-              <Chip label={card.race} color="secondary" variant="outlined" />
-              {card.attribute && <Chip label={card.attribute} color="info" variant="outlined" />}
+
+          {/* Right Column: Details */}
+          <Grid size={{ xs: 12, md: 7 }} sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            
+            {/* Tags */}
+            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+              <Chip label={card.type} sx={{ borderRadius: 0, fontWeight: 700, bgcolor: 'primary.main', color: '#000' }} />
+              <Chip label={card.race} variant="outlined" sx={{ borderRadius: 0, borderColor: '#555' }} />
+              {card.attribute && <Chip label={card.attribute} variant="outlined" sx={{ borderRadius: 0, borderColor: '#555' }} />}
             </Box>
             
-            {(card.atk !== undefined || card.def !== undefined || card.level !== undefined) && (
-              <Box sx={{ display: 'flex', gap: 3, mb: 2, p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
-                {card.level !== undefined && <Typography><strong>Level/Rank:</strong> {card.level}</Typography>}
-                {card.atk !== undefined && <Typography><strong>ATK:</strong> {card.atk}</Typography>}
-                {card.def !== undefined && <Typography><strong>DEF:</strong> {card.def}</Typography>}
+            {/* Stats */}
+            {(card.atk !== undefined || card.def !== undefined || card.level !== undefined || card.linkval !== undefined) && (
+              <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                {card.linkval !== undefined ? (
+                  <StatBlock icon={<Share2 size={20} />} label="Link Rating" value={`LINK-${card.linkval}`} />
+                ) : (
+                  card.level !== undefined && <StatBlock icon={<Star size={20} />} label="Level/Rank" value={card.level} />
+                )}
+                
+                {card.atk !== undefined && <StatBlock icon={<Swords size={20} />} label="ATK" value={card.atk} />}
+                
+                {/* Link monsters don't have DEF */}
+                {card.def !== undefined && !card.type.includes('Link') && (
+                  <StatBlock icon={<Shield size={20} />} label="DEF" value={card.def} />
+                )}
               </Box>
             )}
 
-            <Typography variant="h6" gutterBottom>Description</Typography>
-            <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap', color: 'text.secondary', mb: 3 }}>
-              {card.desc}
-            </Typography>
-
-            {card.card_prices && card.card_prices.length > 0 && (
-              <>
-                <Divider sx={{ my: 2 }} />
-                <Typography variant="h6" gutterBottom>Market Prices</Typography>
-                <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-                  <Typography variant="body2">TCGPlayer: ${card.card_prices[0].tcgplayer_price}</Typography>
-                  <Typography variant="body2">Cardmarket: €{card.card_prices[0].cardmarket_price}</Typography>
+            {/* Link Markers */}
+            {card.linkmarkers && card.linkmarkers.length > 0 && (
+              <Box>
+                <Typography variant="overline" sx={{ color: 'text.secondary', fontWeight: 700, mb: 1, display: 'block' }}>
+                  Link Markers
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                  {card.linkmarkers.map((marker) => (
+                    <Chip 
+                      key={marker} 
+                      label={marker} 
+                      size="small"
+                      sx={{ 
+                        borderRadius: 0, 
+                        fontWeight: 700, 
+                        border: '1px solid #333',
+                        bgcolor: '#0a0a0a',
+                        color: 'primary.main'
+                      }} 
+                    />
+                  ))}
                 </Box>
-              </>
+              </Box>
             )}
+
+            {/* Description */}
+            <Box>
+              <Typography variant="overline" sx={{ color: 'text.secondary', fontWeight: 700, mb: 1, display: 'block' }}>
+                Card Text
+              </Typography>
+              <Paper sx={{ p: 2.5, bgcolor: '#111', border: '1px solid #333', borderRadius: 0 }}>
+                <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap', color: 'text.primary', lineHeight: 1.6 }}>
+                  {card.desc}
+                </Typography>
+              </Paper>
+            </Box>
+
+            {/* Market Prices */}
+            {card.card_prices && card.card_prices.length > 0 && (
+              <Box>
+                <Typography variant="overline" sx={{ color: 'text.secondary', fontWeight: 700, mb: 1, display: 'block' }}>
+                  Market Prices
+                </Typography>
+                <Grid container spacing={2}>
+                  <Grid size={{ xs: 6 }}>
+                    <Paper sx={{ p: 1.5, bgcolor: '#0a0a0a', border: '1px solid #333', borderRadius: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>TCGPlayer</Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 900, color: '#a6e3a1' }}>${card.card_prices[0].tcgplayer_price}</Typography>
+                    </Paper>
+                  </Grid>
+                  <Grid size={{ xs: 6 }}>
+                    <Paper sx={{ p: 1.5, bgcolor: '#0a0a0a', border: '1px solid #333', borderRadius: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>Cardmarket</Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 900, color: '#89b4fa' }}>€{card.card_prices[0].cardmarket_price}</Typography>
+                    </Paper>
+                  </Grid>
+                </Grid>
+              </Box>
+            )}
+            
           </Grid>
         </Grid>
       </DialogContent>
