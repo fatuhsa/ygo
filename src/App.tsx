@@ -1,10 +1,10 @@
 import { ThemeProvider, CssBaseline } from '@mui/material';
-import { catppuccinMocha } from './theme';
+import { inkAndSteelTheme } from './theme';
 import { CardList } from './components/CardList';
 
 function App() {
   return (
-    <ThemeProvider theme={catppuccinMocha}>
+    <ThemeProvider theme={inkAndSteelTheme}>
       <CssBaseline />
       <CardList />
     </ThemeProvider>
