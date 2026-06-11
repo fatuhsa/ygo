@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Dialog, DialogContent, DialogTitle, IconButton, Typography, Box, Grid, Chip, Divider, Skeleton } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, IconButton, Typography, Box, Grid, Chip, Divider, Skeleton, useMediaQuery, useTheme, Slide } from '@mui/material';
+import { TransitionProps } from '@mui/material/transitions';
 import { X } from 'lucide-react';
 import type { YgoCardData } from '../types';
 import { supabase } from '../supabaseClient';
@@ -9,8 +10,17 @@ interface CardDetailsModalProps {
   onClose: () => void;
 }
 
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & { children: React.ReactElement<any, any> },
+  ref: React.Ref<unknown>,
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 export const CardDetailsModal: React.FC<CardDetailsModalProps> = ({ card, onClose }) => {
   const [localUrl, setLocalUrl] = useState<string | null>(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     if (!card) {
@@ -30,11 +40,21 @@ export const CardDetailsModal: React.FC<CardDetailsModalProps> = ({ card, onClos
     <Dialog 
       open={!!card} 
       onClose={onClose} 
+      fullScreen={isMobile}
       maxWidth="md" 
       fullWidth 
-      slotProps={{ 
-        paper: { 
-          sx: { bgcolor: 'background.default', backgroundImage: 'none' } 
+      TransitionComponent={isMobile ? Transition : undefined}
+      PaperProps={{ 
+        sx: { 
+          bgcolor: 'background.default',
+          backgroundImage: 'none',
+          ...(isMobile && {
+            marginTop: '10vh',
+            borderTopLeftRadius: '20px',
+            borderTopRightRadius: '20px',
+            border: 'none',
+            borderTop: '2px solid #333333'
+          })
         } 
       }}
     >
