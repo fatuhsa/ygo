@@ -8,6 +8,8 @@ export interface YgoCardData {
   level?: number;
   race: string;
   attribute?: string;
+  linkval?: number;
+  linkmarkers?: string[];
   card_images: {
     id: number;
     image_url: string;
@@ -21,4 +23,11 @@ export interface YgoCardData {
     amazon_price: string;
     coolstuffinc_price: string;
   }[];
+}
+
+export interface FilterState {
+  archetype: string | null;
+  type: string | null;
+  attribute: string | null;
+  level: string | null;
 }

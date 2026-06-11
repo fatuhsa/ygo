@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Grid, Container, Typography, TextField, InputAdornment, Button, Box, CircularProgress, IconButton } from '@mui/material';
+import { Container, Typography, TextField, InputAdornment, Button, Box, CircularProgress, IconButton, Grid } from '@mui/material';
 import { Search, Menu } from 'lucide-react';
 import { YgoCard } from './YgoCard';
 import { CardDetailsModal } from './CardDetailsModal';
 import { FilterSidebar } from './FilterSidebar';
-import type { YgoCardData } from '../types';
+import type { YgoCardData, FilterState } from '../types';
 
 export const CardList: React.FC = () => {
   const [cards, setCards] = useState<YgoCardData[]>([]);
@@ -14,9 +14,11 @@ export const CardList: React.FC = () => {
   const [hasMore, setHasMore] = useState(true);
   const [selectedCard, setSelectedCard] = useState<YgoCardData | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [activeFilters, setActiveFilters] = useState<{ archetype: string | null; type: string | null }>({
+  const [activeFilters, setActiveFilters] = useState<FilterState>({
     archetype: null,
     type: null,
+    attribute: null,
+    level: null,
   });
   
   const limit = 20;
@@ -43,6 +45,14 @@ export const CardList: React.FC = () => {
         url += `&type=${encodeURIComponent(filters.type)}`;
       }
 
+      if (filters.attribute) {
+        url += `&attribute=${encodeURIComponent(filters.attribute)}`;
+      }
+
+      if (filters.level) {
+        url += `&level=${encodeURIComponent(filters.level)}`;
+      }
+
       const res = await fetch(url);
       const data = await res.json();
       
@@ -64,10 +74,7 @@ export const CardList: React.FC = () => {
 
   // Initial load
   useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchCards(true, '');
-    }, 0);
-    return () => clearTimeout(timer);
+    fetchCards(true, '');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -77,20 +84,29 @@ export const CardList: React.FC = () => {
   };
 
   return (
-    <Container sx={{ py: 4, display: 'flex', flexDirection: 'column', gap: 4 }}>
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 2 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: { xs: '100%', md: 'auto' } }}>
-          <IconButton onClick={() => setIsSidebarOpen(true)} color="primary">
-            <Menu />
+    <Container maxWidth="xl" sx={{ py: 2, px: { xs: 1, sm: 2, md: 3 }, display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Box sx={{ 
+        display: 'flex', 
+        flexDirection: { xs: 'column', md: 'row' }, 
+        justifyContent: 'space-between', 
+        alignItems: { xs: 'flex-start', md: 'center' }, 
+        gap: 2,
+        pb: 1.5,
+        borderBottom: '1px solid #333'
+      }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+          <IconButton onClick={() => setIsSidebarOpen(true)} color="primary" sx={{ border: '1px solid #333' }}>
+            <Menu size={24} />
           </IconButton>
-          <Typography variant="h4" component="h1" sx={{ color: 'primary.main', fontWeight: 'bold' }}>
-            Yu-Gi-Oh! Explorer
+          <Typography variant="h5" component="h1" sx={{ color: 'primary.main', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px' }}>
+            YGO Explorer
           </Typography>
         </Box>
         <Box component="form" onSubmit={handleSearch} sx={{ width: { xs: '100%', md: '400px' } }}>
           <TextField
             fullWidth
-            placeholder="Search cards by name..."
+            size="small"
+            placeholder="Search card name..."
             variant="outlined"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -98,18 +114,33 @@ export const CardList: React.FC = () => {
               input: {
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Search size={20} />
+                    <Search size={18} color="#ffea00" />
                   </InputAdornment>
                 ),
               },
+              htmlInput: {
+                style: { color: '#ffffff', fontWeight: 500 },
+              }
+            }}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                bgcolor: '#111',
+                '& fieldset': { borderColor: '#333' },
+                '&:hover fieldset': { borderColor: '#555' },
+                '&.Mui-focused fieldset': { borderColor: 'primary.main' },
+              },
+              '& .MuiInputBase-input::placeholder': {
+                color: '#888',
+                opacity: 1,
+              }
             }}
           />
         </Box>
       </Box>
 
-      <Grid container spacing={1}>
+      <Grid container spacing={2}>
         {cards.map(card => (
-          <Grid key={card.id} size={{ xs: 6, sm: 4, md: 3, lg: 2.4 }}>
+          <Grid key={card.id} size={{ xs: 6, sm: 4, md: 3, lg: 2, xl: 1.5 }}>
             <YgoCard card={card} onClick={setSelectedCard} />
           </Grid>
         ))}

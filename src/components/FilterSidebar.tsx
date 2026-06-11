@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Drawer, Box, Typography, TextField, Autocomplete, IconButton, List, ListItem, Divider, Checkbox, FormControlLabel } from '@mui/material';
 import { X } from 'lucide-react';
+import type { FilterState } from '../types';
 
 interface FilterSidebarProps {
   open: boolean;
   onClose: () => void;
-  filters: { archetype: string | null; type: string | null };
-  onFilterChange: (newFilters: { archetype: string | null; type: string | null }) => void;
+  filters: FilterState;
+  onFilterChange: (newFilters: FilterState) => void;
 }
 
 export const FilterSidebar: React.FC<FilterSidebarProps> = ({ open, onClose, filters, onFilterChange }) => {
