@@ -38,7 +38,7 @@ A high-contrast, minimalist Yu-Gi-Oh! card viewer built with a focus on speed, m
 
 1. **Clone the repository**:
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/fatuhsa/ygo.git
    cd ygo
    ```
 
