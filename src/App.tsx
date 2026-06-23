@@ -6,6 +6,7 @@ function App() {
   return (
     <ThemeProvider theme={inkAndSteelTheme}>
       <CssBaseline />
+      <div className="cyber-scanlines"></div>
       <CardList />
     </ThemeProvider>
   );
