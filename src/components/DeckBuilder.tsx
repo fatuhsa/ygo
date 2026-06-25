@@ -330,11 +330,11 @@ export const DeckBuilder: React.FC = () => {
                         transition: 'border-color 0.2s',
                         '&:hover': { borderColor: 'primary.main' }
                       }}>
-                        <Box sx={{ cursor: 'pointer' }} onClick={() => { playClick(); setSelectedModalCard(card); }}>
-                          <Typography variant="body2" sx={{ fontWeight: 850, fontFamily: '"Outfit", sans-serif', color: '#ffffff' }}>
+                        <Box sx={{ cursor: 'pointer', flexGrow: 1, minWidth: 0, pr: 1 }} onClick={() => { playClick(); setSelectedModalCard(card); }}>
+                          <Typography variant="body2" sx={{ fontWeight: 850, fontFamily: '"Outfit", sans-serif', color: '#ffffff', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
                             {card.name}
                           </Typography>
-                          <Typography variant="caption" sx={{ color: '#5a6273', fontWeight: 700 }}>
+                          <Typography variant="caption" sx={{ color: '#5a6273', fontWeight: 700, display: 'block', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
                             {card.type.replace(' Monster', '').toUpperCase()}
                           </Typography>
                         </Box>
@@ -381,11 +381,11 @@ export const DeckBuilder: React.FC = () => {
                         transition: 'border-color 0.2s',
                         '&:hover': { borderColor: 'primary.main' }
                       }}>
-                        <Box sx={{ cursor: 'pointer' }} onClick={() => { playClick(); setSelectedModalCard(card); }}>
-                          <Typography variant="body2" sx={{ fontWeight: 850, fontFamily: '"Outfit", sans-serif', color: '#ffffff' }}>
+                        <Box sx={{ cursor: 'pointer', flexGrow: 1, minWidth: 0, pr: 1 }} onClick={() => { playClick(); setSelectedModalCard(card); }}>
+                          <Typography variant="body2" sx={{ fontWeight: 850, fontFamily: '"Outfit", sans-serif', color: '#ffffff', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
                             {card.name}
                           </Typography>
-                          <Typography variant="caption" sx={{ color: '#5a6273', fontWeight: 700 }}>
+                          <Typography variant="caption" sx={{ color: '#5a6273', fontWeight: 700, display: 'block', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
                             {card.type.replace(' Monster', '').toUpperCase()}
                           </Typography>
                         </Box>

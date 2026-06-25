@@ -276,6 +276,8 @@ export const CardDetailsModal: React.FC<CardDetailsModalProps> = ({ card, onClos
             backgroundImage: 'none',
             ...(isMobile && {
               marginTop: '10vh',
+              height: '90vh',
+              maxHeight: '90vh',
               borderTopLeftRadius: '24px',
               borderTopRightRadius: '24px',
               border: 'none',
@@ -330,8 +332,8 @@ export const CardDetailsModal: React.FC<CardDetailsModalProps> = ({ card, onClos
               p: 2.5,
               bgcolor: '#050506',
               border: '1.5px solid #1f2229',
-              position: 'sticky',
-              top: 80,
+              position: { xs: 'static', md: 'sticky' },
+              top: { xs: 0, md: 80 },
               boxShadow: '0 10px 30px rgba(0,0,0,0.7), inset 0 0 20px rgba(255,234,0,0.02)',
               '&:hover': {
                 borderColor: 'primary.main',
@@ -533,7 +535,7 @@ export const CardDetailsModal: React.FC<CardDetailsModalProps> = ({ card, onClos
                       backgroundImage: 'none',
                       '&:hover': { borderColor: '#a6e3a1' }
                     }}>
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, gap: 0.5 }}>
                         <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 800, letterSpacing: '0.5px' }}>TCGPLAYER</Typography>
                         <Typography variant="body1" sx={{ fontWeight: 900, color: '#a6e3a1', fontFamily: '"Orbitron", sans-serif', textShadow: '0 0 5px rgba(166,227,161,0.2)' }}>${card.card_prices[0].tcgplayer_price}</Typography>
                       </Box>
@@ -551,7 +553,7 @@ export const CardDetailsModal: React.FC<CardDetailsModalProps> = ({ card, onClos
                       backgroundImage: 'none',
                       '&:hover': { borderColor: '#89b4fa' }
                     }}>
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, gap: 0.5 }}>
                         <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 800, letterSpacing: '0.5px' }}>CARDMARKET</Typography>
                         <Typography variant="body1" sx={{ fontWeight: 900, color: '#89b4fa', fontFamily: '"Orbitron", sans-serif', textShadow: '0 0 5px rgba(137,180,250,0.2)' }}>€{card.card_prices[0].cardmarket_price}</Typography>
                       </Box>
