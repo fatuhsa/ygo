@@ -134,7 +134,7 @@ export const CardList: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="xl" sx={{ py: 3, px: { xs: 1, sm: 2, md: 3 }, display: 'flex', flexDirection: 'column', gap: 3 }}>
+    <Container maxWidth="xl" sx={{ py: 3, pb: comparisonCards.length > 0 ? { xs: 14, md: 3 } : 3, px: { xs: 1, sm: 2, md: 3 }, display: 'flex', flexDirection: 'column', gap: 3 }}>
       {/* Header Panel */}
       <Box sx={{ 
         display: 'flex', 
@@ -144,7 +144,7 @@ export const CardList: React.FC = () => {
         gap: 2,
         pb: 2,
         pt: 1,
-        position: 'sticky',
+        position: { xs: 'static', md: 'sticky' },
         top: 0,
         zIndex: 100,
         backgroundColor: 'rgba(5, 5, 6, 0.85)',
