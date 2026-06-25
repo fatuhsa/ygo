@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Container, Typography, TextField, InputAdornment, Button, Box, CircularProgress, IconButton, Grid } from '@mui/material';
+import { Container, Typography, TextField, InputAdornment, Button, Box, CircularProgress, IconButton, Grid, Tooltip } from '@mui/material';
 import { Search, Menu, Compass, Star, Gift, Briefcase, ArrowRightLeft, BarChart3, HelpCircle, X } from 'lucide-react';
 import { YgoCard } from './YgoCard';
 import { CardDetailsModal } from './CardDetailsModal';
@@ -202,160 +202,208 @@ export const CardList: React.FC = () => {
           maxWidth: { xs: '100%', md: 'auto' },
           '&::-webkit-scrollbar': { display: 'none' }
         }}>
-          <Button
-            size="small"
-            onClick={() => { playClick(); setActiveTab('explorer'); }}
-            startIcon={<Compass size={14} />}
-            sx={{
-              color: activeTab === 'explorer' ? '#000000' : 'text.secondary',
-              bgcolor: activeTab === 'explorer' ? 'primary.main' : 'transparent',
-              fontFamily: '"Orbitron", sans-serif',
-              fontWeight: 800,
-              letterSpacing: '0.5px',
-              borderRadius: 0,
-              fontSize: '0.68rem',
-              whiteSpace: 'nowrap',
-              backgroundImage: activeTab === 'explorer' ? 'linear-gradient(135deg, #ffea00 0%, #d4c200 100%)' : 'none',
-              '&:hover': {
-                bgcolor: activeTab === 'explorer' ? 'primary.main' : 'rgba(255,234,0,0.05)',
-                color: activeTab === 'explorer' ? '#000000' : 'primary.main',
-              }
-            }}
-          >
-            EXPLORER
-          </Button>
-          <Button
-            size="small"
-            onClick={() => { playClick(); setActiveTab('favorites'); fetchFavorites(); }}
-            startIcon={<Star size={14} />}
-            sx={{
-              color: activeTab === 'favorites' ? '#000000' : 'text.secondary',
-              bgcolor: activeTab === 'favorites' ? 'primary.main' : 'transparent',
-              fontFamily: '"Orbitron", sans-serif',
-              fontWeight: 800,
-              letterSpacing: '0.5px',
-              borderRadius: 0,
-              fontSize: '0.68rem',
-              whiteSpace: 'nowrap',
-              backgroundImage: activeTab === 'favorites' ? 'linear-gradient(135deg, #ffea00 0%, #d4c200 100%)' : 'none',
-              '&:hover': {
-                bgcolor: activeTab === 'favorites' ? 'primary.main' : 'rgba(255,234,0,0.05)',
-                color: activeTab === 'favorites' ? '#000000' : 'primary.main',
-              }
-            }}
-          >
-            FAVORITES
-          </Button>
-          <Button
-            size="small"
-            onClick={() => { playClick(); setActiveTab('deck'); }}
-            startIcon={<Briefcase size={14} />}
-            sx={{
-              color: activeTab === 'deck' ? '#000000' : 'text.secondary',
-              bgcolor: activeTab === 'deck' ? 'primary.main' : 'transparent',
-              fontFamily: '"Orbitron", sans-serif',
-              fontWeight: 800,
-              letterSpacing: '0.5px',
-              borderRadius: 0,
-              fontSize: '0.68rem',
-              whiteSpace: 'nowrap',
-              backgroundImage: activeTab === 'deck' ? 'linear-gradient(135deg, #ffea00 0%, #d4c200 100%)' : 'none',
-              '&:hover': {
-                bgcolor: activeTab === 'deck' ? 'primary.main' : 'rgba(255,234,0,0.05)',
-                color: activeTab === 'deck' ? '#000000' : 'primary.main',
-              }
-            }}
-          >
-            DECK BUILDER
-          </Button>
-          <Button
-            size="small"
-            onClick={() => { playClick(); setActiveTab('comparator'); }}
-            startIcon={<ArrowRightLeft size={14} />}
-            sx={{
-              color: activeTab === 'comparator' ? '#000000' : 'text.secondary',
-              bgcolor: activeTab === 'comparator' ? 'primary.main' : 'transparent',
-              fontFamily: '"Orbitron", sans-serif',
-              fontWeight: 800,
-              letterSpacing: '0.5px',
-              borderRadius: 0,
-              fontSize: '0.68rem',
-              whiteSpace: 'nowrap',
-              backgroundImage: activeTab === 'comparator' ? 'linear-gradient(135deg, #ffea00 0%, #d4c200 100%)' : 'none',
-              '&:hover': {
-                bgcolor: activeTab === 'comparator' ? 'primary.main' : 'rgba(255,234,0,0.05)',
-                color: activeTab === 'comparator' ? '#000000' : 'primary.main',
-              }
-            }}
-          >
-            COMPARATOR
-          </Button>
-          <Button
-            size="small"
-            onClick={() => { playClick(); setActiveTab('analytics'); }}
-            startIcon={<BarChart3 size={14} />}
-            sx={{
-              color: activeTab === 'analytics' ? '#000000' : 'text.secondary',
-              bgcolor: activeTab === 'analytics' ? 'primary.main' : 'transparent',
-              fontFamily: '"Orbitron", sans-serif',
-              fontWeight: 800,
-              letterSpacing: '0.5px',
-              borderRadius: 0,
-              fontSize: '0.68rem',
-              whiteSpace: 'nowrap',
-              backgroundImage: activeTab === 'analytics' ? 'linear-gradient(135deg, #ffea00 0%, #d4c200 100%)' : 'none',
-              '&:hover': {
-                bgcolor: activeTab === 'analytics' ? 'primary.main' : 'rgba(255,234,0,0.05)',
-                color: activeTab === 'analytics' ? '#000000' : 'primary.main',
-              }
-            }}
-          >
-            ANALYTICS
-          </Button>
-          <Button
-            size="small"
-            onClick={() => { playClick(); setActiveTab('quiz'); }}
-            startIcon={<HelpCircle size={14} />}
-            sx={{
-              color: activeTab === 'quiz' ? '#000000' : 'text.secondary',
-              bgcolor: activeTab === 'quiz' ? 'primary.main' : 'transparent',
-              fontFamily: '"Orbitron", sans-serif',
-              fontWeight: 800,
-              letterSpacing: '0.5px',
-              borderRadius: 0,
-              fontSize: '0.68rem',
-              whiteSpace: 'nowrap',
-              backgroundImage: activeTab === 'quiz' ? 'linear-gradient(135deg, #ffea00 0%, #d4c200 100%)' : 'none',
-              '&:hover': {
-                bgcolor: activeTab === 'quiz' ? 'primary.main' : 'rgba(255,234,0,0.05)',
-                color: activeTab === 'quiz' ? '#000000' : 'primary.main',
-              }
-            }}
-          >
-            QUIZ TERMINAL
-          </Button>
-          <Button
-            size="small"
-            onClick={() => { playClick(); setActiveTab('gacha'); }}
-            startIcon={<Gift size={14} />}
-            sx={{
-              color: activeTab === 'gacha' ? '#000000' : 'text.secondary',
-              bgcolor: activeTab === 'gacha' ? 'primary.main' : 'transparent',
-              fontFamily: '"Orbitron", sans-serif',
-              fontWeight: 800,
-              letterSpacing: '0.5px',
-              borderRadius: 0,
-              fontSize: '0.68rem',
-              whiteSpace: 'nowrap',
-              backgroundImage: activeTab === 'gacha' ? 'linear-gradient(135deg, #ffea00 0%, #d4c200 100%)' : 'none',
-              '&:hover': {
-                bgcolor: activeTab === 'gacha' ? 'primary.main' : 'rgba(255,234,0,0.05)',
-                color: activeTab === 'gacha' ? '#000000' : 'primary.main',
-              }
-            }}
-          >
-            BOOSTER GACHA
-          </Button>
+          <Tooltip title="Explorer" enterTouchDelay={0}>
+            <Button
+              size="small"
+              onClick={() => { playClick(); setActiveTab('explorer'); }}
+              sx={{
+                color: activeTab === 'explorer' ? '#000000' : 'text.secondary',
+                bgcolor: activeTab === 'explorer' ? 'primary.main' : 'transparent',
+                fontFamily: '"Orbitron", sans-serif',
+                fontWeight: 800,
+                letterSpacing: '0.5px',
+                borderRadius: 0,
+                fontSize: '0.68rem',
+                whiteSpace: 'nowrap',
+                minWidth: { xs: '40px', md: 'auto' },
+                px: { xs: 1.2, md: 2 },
+                backgroundImage: activeTab === 'explorer' ? 'linear-gradient(135deg, #ffea00 0%, #d4c200 100%)' : 'none',
+                '&:hover': {
+                  bgcolor: activeTab === 'explorer' ? 'primary.main' : 'rgba(255,234,0,0.05)',
+                  color: activeTab === 'explorer' ? '#000000' : 'primary.main',
+                }
+              }}
+            >
+              <Compass size={16} />
+              <Box component="span" sx={{ display: { xs: 'none', md: 'inline' }, ml: 1 }}>
+                EXPLORER
+              </Box>
+            </Button>
+          </Tooltip>
+          
+          <Tooltip title="Favorites" enterTouchDelay={0}>
+            <Button
+              size="small"
+              onClick={() => { playClick(); setActiveTab('favorites'); fetchFavorites(); }}
+              sx={{
+                color: activeTab === 'favorites' ? '#000000' : 'text.secondary',
+                bgcolor: activeTab === 'favorites' ? 'primary.main' : 'transparent',
+                fontFamily: '"Orbitron", sans-serif',
+                fontWeight: 800,
+                letterSpacing: '0.5px',
+                borderRadius: 0,
+                fontSize: '0.68rem',
+                whiteSpace: 'nowrap',
+                minWidth: { xs: '40px', md: 'auto' },
+                px: { xs: 1.2, md: 2 },
+                backgroundImage: activeTab === 'favorites' ? 'linear-gradient(135deg, #ffea00 0%, #d4c200 100%)' : 'none',
+                '&:hover': {
+                  bgcolor: activeTab === 'favorites' ? 'primary.main' : 'rgba(255,234,0,0.05)',
+                  color: activeTab === 'favorites' ? '#000000' : 'primary.main',
+                }
+              }}
+            >
+              <Star size={16} />
+              <Box component="span" sx={{ display: { xs: 'none', md: 'inline' }, ml: 1 }}>
+                FAVORITES
+              </Box>
+            </Button>
+          </Tooltip>
+
+          <Tooltip title="Deck Builder" enterTouchDelay={0}>
+            <Button
+              size="small"
+              onClick={() => { playClick(); setActiveTab('deck'); }}
+              sx={{
+                color: activeTab === 'deck' ? '#000000' : 'text.secondary',
+                bgcolor: activeTab === 'deck' ? 'primary.main' : 'transparent',
+                fontFamily: '"Orbitron", sans-serif',
+                fontWeight: 800,
+                letterSpacing: '0.5px',
+                borderRadius: 0,
+                fontSize: '0.68rem',
+                whiteSpace: 'nowrap',
+                minWidth: { xs: '40px', md: 'auto' },
+                px: { xs: 1.2, md: 2 },
+                backgroundImage: activeTab === 'deck' ? 'linear-gradient(135deg, #ffea00 0%, #d4c200 100%)' : 'none',
+                '&:hover': {
+                  bgcolor: activeTab === 'deck' ? 'primary.main' : 'rgba(255,234,0,0.05)',
+                  color: activeTab === 'deck' ? '#000000' : 'primary.main',
+                }
+              }}
+            >
+              <Briefcase size={16} />
+              <Box component="span" sx={{ display: { xs: 'none', md: 'inline' }, ml: 1 }}>
+                DECK BUILDER
+              </Box>
+            </Button>
+          </Tooltip>
+
+          <Tooltip title="Comparator" enterTouchDelay={0}>
+            <Button
+              size="small"
+              onClick={() => { playClick(); setActiveTab('comparator'); }}
+              sx={{
+                color: activeTab === 'comparator' ? '#000000' : 'text.secondary',
+                bgcolor: activeTab === 'comparator' ? 'primary.main' : 'transparent',
+                fontFamily: '"Orbitron", sans-serif',
+                fontWeight: 800,
+                letterSpacing: '0.5px',
+                borderRadius: 0,
+                fontSize: '0.68rem',
+                whiteSpace: 'nowrap',
+                minWidth: { xs: '40px', md: 'auto' },
+                px: { xs: 1.2, md: 2 },
+                backgroundImage: activeTab === 'comparator' ? 'linear-gradient(135deg, #ffea00 0%, #d4c200 100%)' : 'none',
+                '&:hover': {
+                  bgcolor: activeTab === 'comparator' ? 'primary.main' : 'rgba(255,234,0,0.05)',
+                  color: activeTab === 'comparator' ? '#000000' : 'primary.main',
+                }
+              }}
+            >
+              <ArrowRightLeft size={16} />
+              <Box component="span" sx={{ display: { xs: 'none', md: 'inline' }, ml: 1 }}>
+                COMPARATOR
+              </Box>
+            </Button>
+          </Tooltip>
+
+          <Tooltip title="Analytics" enterTouchDelay={0}>
+            <Button
+              size="small"
+              onClick={() => { playClick(); setActiveTab('analytics'); }}
+              sx={{
+                color: activeTab === 'analytics' ? '#000000' : 'text.secondary',
+                bgcolor: activeTab === 'analytics' ? 'primary.main' : 'transparent',
+                fontFamily: '"Orbitron", sans-serif',
+                fontWeight: 800,
+                letterSpacing: '0.5px',
+                borderRadius: 0,
+                fontSize: '0.68rem',
+                whiteSpace: 'nowrap',
+                minWidth: { xs: '40px', md: 'auto' },
+                px: { xs: 1.2, md: 2 },
+                backgroundImage: activeTab === 'analytics' ? 'linear-gradient(135deg, #ffea00 0%, #d4c200 100%)' : 'none',
+                '&:hover': {
+                  bgcolor: activeTab === 'analytics' ? 'primary.main' : 'rgba(255,234,0,0.05)',
+                  color: activeTab === 'analytics' ? '#000000' : 'primary.main',
+                }
+              }}
+            >
+              <BarChart3 size={16} />
+              <Box component="span" sx={{ display: { xs: 'none', md: 'inline' }, ml: 1 }}>
+                ANALYTICS
+              </Box>
+            </Button>
+          </Tooltip>
+
+          <Tooltip title="Quiz Terminal" enterTouchDelay={0}>
+            <Button
+              size="small"
+              onClick={() => { playClick(); setActiveTab('quiz'); }}
+              sx={{
+                color: activeTab === 'quiz' ? '#000000' : 'text.secondary',
+                bgcolor: activeTab === 'quiz' ? 'primary.main' : 'transparent',
+                fontFamily: '"Orbitron", sans-serif',
+                fontWeight: 800,
+                letterSpacing: '0.5px',
+                borderRadius: 0,
+                fontSize: '0.68rem',
+                whiteSpace: 'nowrap',
+                minWidth: { xs: '40px', md: 'auto' },
+                px: { xs: 1.2, md: 2 },
+                backgroundImage: activeTab === 'quiz' ? 'linear-gradient(135deg, #ffea00 0%, #d4c200 100%)' : 'none',
+                '&:hover': {
+                  bgcolor: activeTab === 'quiz' ? 'primary.main' : 'rgba(255,234,0,0.05)',
+                  color: activeTab === 'quiz' ? '#000000' : 'primary.main',
+                }
+              }}
+            >
+              <HelpCircle size={16} />
+              <Box component="span" sx={{ display: { xs: 'none', md: 'inline' }, ml: 1 }}>
+                QUIZ
+              </Box>
+            </Button>
+          </Tooltip>
+
+          <Tooltip title="Booster Gacha" enterTouchDelay={0}>
+            <Button
+              size="small"
+              onClick={() => { playClick(); setActiveTab('gacha'); }}
+              sx={{
+                color: activeTab === 'gacha' ? '#000000' : 'text.secondary',
+                bgcolor: activeTab === 'gacha' ? 'primary.main' : 'transparent',
+                fontFamily: '"Orbitron", sans-serif',
+                fontWeight: 800,
+                letterSpacing: '0.5px',
+                borderRadius: 0,
+                fontSize: '0.68rem',
+                whiteSpace: 'nowrap',
+                minWidth: { xs: '40px', md: 'auto' },
+                px: { xs: 1.2, md: 2 },
+                backgroundImage: activeTab === 'gacha' ? 'linear-gradient(135deg, #ffea00 0%, #d4c200 100%)' : 'none',
+                '&:hover': {
+                  bgcolor: activeTab === 'gacha' ? 'primary.main' : 'rgba(255,234,0,0.05)',
+                  color: activeTab === 'gacha' ? '#000000' : 'primary.main',
+                }
+              }}
+            >
+              <Gift size={16} />
+              <Box component="span" sx={{ display: { xs: 'none', md: 'inline' }, ml: 1 }}>
+                GACHA
+              </Box>
+            </Button>
+          </Tooltip>
         </Box>
 
         {activeTab === 'explorer' && (
